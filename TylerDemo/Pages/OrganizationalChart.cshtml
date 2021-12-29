@@ -1,0 +1,60 @@
+﻿@page
+@model TylerDemo.Pages.OrganizationalChartModel
+@{
+}
+<h3>Organizational Chart</h3>
+<div style="padding:30px">
+    <table>
+
+        <tr>
+            <td style="background-color:deepskyblue;color:white">
+                @Model.TopEmployee.FullName<br />
+                Role(s) :@foreach (var role in Model.TopEmployee.Roles)
+                {
+                    <text>
+                        @role.RoleDescription
+                    </text>
+                }
+
+                <div style="padding:20px">
+                    <table>
+                        @{
+                            var subordinates1 = Model.OrganizationalChart.Where(x => x.ReportsToId == Model.TopEmployee.EmployeeNumber).ToList();
+                            foreach (var emp in subordinates1)
+                            {
+                                <tr>
+                                    <td style="background-color:darkseagreen">
+                                        @emp.FirstName @emp.LastName<br>
+                                        Role(s):@emp.Roles
+
+                                        <div style="padding:20px">
+                                            <table >
+                                                @{
+                                                    var subordinates2 = Model.OrganizationalChart.Where(x => x.ReportsToId == emp.Id).ToList();
+                                                    foreach (var emp2 in subordinates2)
+                                                    {
+                                                        <tr>
+                                                            <td style="background-color:mediumpurple;color:black">
+                                                                <div style="padding:20px">
+                                                                    @emp2.FirstName @emp2.LastName<br>
+                                                                    Role(s):@emp2.Roles
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                    </table>
+                </div>
+            </td>
+        </tr>
+
+    </table>
+</div>
